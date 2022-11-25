@@ -16,11 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
+    private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
         if (loginDto.isNotValid()) {
+            return new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
+        }
+
+        Member member = memberService.findByUsername(loginDto.getUsername()).orElse(null);
+
+        if (member == null) {
+            return new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
+        }
+
+        if (passwordEncoder.matches(loginDto.getPassword(), member.getPassword()) == false) {
             return new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
         }
 
