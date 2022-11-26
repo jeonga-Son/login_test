@@ -1,12 +1,10 @@
 package com.ja.exam.wantrip.app.article.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ja.exam.wantrip.app.base.entity.BaseEntity;
 import com.ja.exam.wantrip.app.member.entity.Member;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
