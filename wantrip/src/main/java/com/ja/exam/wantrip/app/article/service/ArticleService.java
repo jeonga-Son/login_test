@@ -1,5 +1,6 @@
 package com.ja.exam.wantrip.app.article.service;
 
+import com.ja.exam.wantrip.app.article.dto.request.ArticleModifyDto;
 import com.ja.exam.wantrip.app.article.entity.Article;
 import com.ja.exam.wantrip.app.article.repository.ArticleRepository;
 import com.ja.exam.wantrip.app.member.entity.Member;
@@ -41,5 +42,15 @@ public class ArticleService {
 
     public void delete(Article article) {
         articleRepository.delete(article);
+    }
+
+    public void modify(Article article, ArticleModifyDto articleModifyDto) {
+        article.setSubject(articleModifyDto.getSubject());
+        article.setContent(articleModifyDto.getContent());
+        articleRepository.save(article);
+    }
+
+    public boolean actorCanModify(MemberContext memberContext, Article article) {
+        return actorCanDelete(memberContext, article);
     }
 }
