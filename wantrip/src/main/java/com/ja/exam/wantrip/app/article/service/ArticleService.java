@@ -3,6 +3,7 @@ package com.ja.exam.wantrip.app.article.service;
 import com.ja.exam.wantrip.app.article.entity.Article;
 import com.ja.exam.wantrip.app.article.repository.ArticleRepository;
 import com.ja.exam.wantrip.app.member.entity.Member;
+import com.ja.exam.wantrip.app.security.entity.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,13 @@ public class ArticleService {
 
     public Optional<Article> findById(Long id) {
         return articleRepository.findById(id);
+    }
+
+    public boolean actorCanDelete(MemberContext memberContext, Article article) {
+        return memberContext.getId() == article.getAuthor().getId();
+    }
+
+    public void delete(Article article) {
+        articleRepository.delete(article);
     }
 }
