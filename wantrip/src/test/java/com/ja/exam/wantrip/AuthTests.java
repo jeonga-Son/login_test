@@ -189,14 +189,13 @@ class AuthTests {
         resultActions = mvc
                 .perform(
                         get("/member/me")
-                                .header("Authentication", "Bearer " + accessToken)
+                                .header("Authorization", "Bearer " + accessToken)
                 )
                 .andDo(print());
 
         // Then
         resultActions
                 .andExpect(status().is2xxSuccessful());
-
 
         // MemberController me 메서드에서는 @AuthenticationPrincipal MemberContext memberContext 를 사용해서 현재 로그인 한 회원의 정보를 얻어야 한다.
 
