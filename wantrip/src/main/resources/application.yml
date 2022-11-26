@@ -5,6 +5,11 @@ spring:
       - base-addi
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
   batch:
     job:
       names: ${job.name:NONE}
