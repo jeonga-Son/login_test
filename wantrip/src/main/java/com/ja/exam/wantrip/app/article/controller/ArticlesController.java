@@ -6,6 +6,7 @@ import com.ja.exam.wantrip.app.article.service.ArticleService;
 import com.ja.exam.wantrip.app.base.dto.RsData;
 import com.ja.exam.wantrip.app.security.entity.MemberContext;
 import com.ja.exam.wantrip.util.Util;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -56,7 +57,10 @@ public class ArticlesController {
     }
 
     @DeleteMapping("{id}") // Rest API 는 GET, POST, DELETE 등 모두 사용함
-    public ResponseEntity<RsData> delete(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext) {
+    public ResponseEntity<RsData> delete(
+            @PathVariable Long id,
+            @Parameter(hidden = true) @AuthenticationPrincipal MemberContext memberContext
+    ) {
         Article article = articleService.findById(id).orElse(null);
 
         if (article == null) {
