@@ -1,11 +1,11 @@
 package com.ja.exam.wantrip.app.member.controller;
 
+import com.ja.exam.wantrip.app.member.dto.request.LoginDto;
 import com.ja.exam.wantrip.app.member.entity.Member;
 import com.ja.exam.wantrip.app.member.service.MemberService;
 import com.ja.exam.wantrip.app.base.dto.RsData;
 import com.ja.exam.wantrip.app.security.entity.MemberContext;
 import com.ja.exam.wantrip.util.Util;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,15 @@ public class MemberController {
     @GetMapping("/test")
     public String test(@AuthenticationPrincipal MemberContext memberContext) {
         return "안녕" + memberContext;
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<RsData> me(@AuthenticationPrincipal MemberContext memberContext) {
+        if (memberContext == null) { // 임시코드, 나중에는 시프링 시큐리티를 이용해서 로그인을 안했다면, 아예 여기로 못 들어오도록 구현 ㅇㅖ정
+            return Util.spring.responseEntityOf(RsData.failOf(null));
+        }
+
+        return Util.spring.responseEntityOf(RsData.successOf(memberContext));
     }
 
     @PostMapping("/login")
@@ -57,15 +66,5 @@ public class MemberController {
                 ),
                 Util.spring.httpHeadersOf("Authentication", accessToken)
         );
-    }
-
-    @Data
-    public static class LoginDto {
-        private String username;
-        private String password;
-
-        public boolean isNotValid() {
-            return username == null || password == null || username.trim().length() == 0 || password.trim().length() == 0;
-        }
     }
 }
