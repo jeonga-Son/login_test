@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-@JsonIncludeProperties({"id", "createDate", "modifyDate", "username", "email", "authorities"}) // 원하는 것 만 노출되도록 구현.
+@JsonIncludeProperties({"id", "createDate", "modifyDate", "username", "email", "authorities"})
 public class MemberContext extends User {
     private final long id;
     private final LocalDateTime createDate;

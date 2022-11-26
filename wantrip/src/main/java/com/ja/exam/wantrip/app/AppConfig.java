@@ -20,6 +20,6 @@ public class AppConfig {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper().registerModule(new JavaTimeModule()); // JavaTimeModule() 은 LocalDateTime 직렬화 역직렬화 오류 때문에 쓰임
+        return new ObjectMapper().registerModule(new JavaTimeModule());
     }
 }

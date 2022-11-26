@@ -33,7 +33,7 @@ public class MemberController {
 
     @GetMapping("/me")
     public ResponseEntity<RsData> me(@AuthenticationPrincipal MemberContext memberContext) {
-        if (memberContext == null) { // 임시코드, 나중에는 시프링 시큐리티를 이용해서 로그인을 안했다면, 아예 여기로 못 들어오도록 구현 ㅇㅖ정
+        if (memberContext == null) { // 임시코드, 나중에는 시프링 시큐리티를 이용해서 로그인을 안했다면, 아예 여기로 못 들어오도록
             return Util.spring.responseEntityOf(RsData.failOf(null));
         }
 
@@ -42,7 +42,6 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<RsData> login(@Valid @RequestBody LoginDto loginDto) {
-
         Member member = memberService.findByUsername(loginDto.getUsername()).orElse(null);
 
         if (member == null) {

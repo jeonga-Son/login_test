@@ -36,7 +36,7 @@ public class MemberService {
     public String genAccessToken(Member member) {
         String accessToken = member.getAccessToken();
 
-        if (StringUtils.hasLength(accessToken) == false) {
+        if (StringUtils.hasLength(accessToken) == false ) {
             accessToken = jwtProvider.generateAccessToken(member.getAccessTokenClaims(), 60L * 60 * 24 * 365 * 100);
             member.setAccessToken(accessToken);
         }

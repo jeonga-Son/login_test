@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,11 +33,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (bearerToken != null) {
             String token = bearerToken.substring("Bearer ".length());
 
+            // 1차 체크(정보가 변조되지 않았는지 체크)
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
                 // 캐시(레디스)를 통해서
                 Member member = memberService.findByUsername((String) claims.get("username")).get();
-                forceAuthentication(member);
+
+                // 2차 체크(화이트리스트에 포함되는지)
+                if ( memberService.verifyWithWhiteList(member, token) ) {
+                    forceAuthentication(member);
+                }
             }
         }
 
@@ -59,5 +63,4 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
     }
-
 }
