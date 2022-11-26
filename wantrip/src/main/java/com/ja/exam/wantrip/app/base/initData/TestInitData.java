@@ -1,4 +1,4 @@
-package com.ja.exam.wantrip.base.initData;
+package com.ja.exam.wantrip.app.base.initData;
 
 import com.ja.exam.wantrip.app.member.entity.Member;
 import com.ja.exam.wantrip.app.member.service.MemberService;

@@ -2,12 +2,11 @@ package com.ja.exam.wantrip.app.member.controller;
 
 import com.ja.exam.wantrip.app.member.entity.Member;
 import com.ja.exam.wantrip.app.member.service.MemberService;
-import com.ja.exam.wantrip.base.dto.RsData;
+import com.ja.exam.wantrip.app.base.dto.RsData;
 import com.ja.exam.wantrip.util.Util;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
@@ -39,7 +39,9 @@ public class MemberController {
             return Util.spring.responseEntityOf(RsData.of("F-3", "비밀번호가 일치하지 않습니다."));
         }
 
-        String accessToken = "JWT_Access_Token";
+        log.debug("Util.json.toStr(member.getAccessTokenClaims()) : " + Util.json.toStr(member.getAccessTokenClaims()));
+
+        String accessToken = memberService.genAccessToken(member);
 
         return Util.spring.responseEntityOf(
                 RsData.of(
@@ -49,7 +51,6 @@ public class MemberController {
                                 "accessToken", accessToken
                         )
                 ),
-
                 Util.spring.httpHeadersOf("Authentication", accessToken)
         );
     }

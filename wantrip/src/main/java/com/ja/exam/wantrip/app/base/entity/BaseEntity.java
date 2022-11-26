@@ -1,4 +1,4 @@
-package com.ja.exam.wantrip.base.entity;
+package com.ja.exam.wantrip.app.base.entity;
 
 import lombok.Builder;
 import lombok.Getter;

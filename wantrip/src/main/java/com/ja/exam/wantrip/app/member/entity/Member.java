@@ -1,7 +1,8 @@
 package com.ja.exam.wantrip.app.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ja.exam.wantrip.base.entity.BaseEntity;
+import com.ja.exam.wantrip.app.base.entity.BaseEntity;
+import com.ja.exam.wantrip.util.Util;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Setter
@@ -39,5 +41,16 @@ public class Member extends BaseEntity {
         authorities.add(new SimpleGrantedAuthority("MEMBER"));
 
         return authorities;
+    }
+
+    public Map<String, Object> getAccessTokenClaims() {
+        return Util.mapOf(
+                "id", getId(),
+                "createDate", getCreateDate(),
+                "modifyDate", getModifyDate(),
+                "username", getUsername(),
+                "email", getEmail(),
+                "authorities", getAuthorities()
+        );
     }
 }
