@@ -1,5 +1,6 @@
 package com.ja.exam.wantrip.app.member.service;
 
+import com.ja.exam.wantrip.app.AppConfig;
 import com.ja.exam.wantrip.app.member.entity.Member;
 import com.ja.exam.wantrip.app.member.repository.MemberRepository;
 import com.ja.exam.wantrip.app.security.jwt.JwtProvider;
@@ -53,9 +54,16 @@ public class MemberService {
     }
 
     @Cacheable("member")
-    public Map<String, Object> getByUsername__cached(String username) {
+    public Map<String, Object> getMemberMapByUsername__cached(String username) {
         Member member = findByUsername(username).orElse(null);
 
         return member.toMap();
+    }
+
+    public Member getByUsername__cached(String username) {
+        MemberService thisObj = (MemberService) AppConfig.getContext().getBean("memberService");
+        Map<String, Object> memberMap = thisObj.getMemberMapByUsername__cached(username);
+
+        return Member.fromMap(memberMap);
     }
 }
